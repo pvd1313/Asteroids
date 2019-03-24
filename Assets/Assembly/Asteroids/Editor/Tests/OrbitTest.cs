@@ -128,7 +128,7 @@ namespace Asteroids.Gravity.Test
                     if (tr.Eccentricity < 1)
                     {
                         var isValid = Math.Abs(MathUtil.DeltaAngle(mean, newMean)) < TOLERANCE;
-                        if (!isValid) isValid = Math.Abs(MathUtil.DeltaAngle(mean, MathUtil.TWO_PI - newMean)) < TOLERANCE;
+                        if (!isValid) isValid = Math.Abs(MathUtil.DeltaAngle(mean, 2 * Math.PI - newMean)) < TOLERANCE;
                         Assert.IsTrue(isValid);
                     }
                     else

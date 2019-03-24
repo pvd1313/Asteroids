@@ -39,9 +39,9 @@ namespace Asteroids.Gravity.Mono
         public void Modify(double newInfluenceRadius, MinMax newGravity)
         {
             _influenceRadius = newInfluenceRadius;
-            _mass = newGravity.Min * _influenceRadius * _influenceRadius;
-            if (newGravity.Max == 0) newGravity.Max = 1;
-            _surfaceRadius = newGravity.Min / newGravity.Max * _influenceRadius;
+            _mass = newGravity.min * _influenceRadius * _influenceRadius;
+            if (newGravity.max == 0) newGravity.max = 1;
+            _surfaceRadius = newGravity.min / newGravity.max * _influenceRadius;
             Validate();
             this.SendMessageToFirstChildren("OnParentGravityFieldModified", SendMessageOptions.DontRequireReceiver);
         }
@@ -66,7 +66,7 @@ namespace Asteroids.Gravity.Mono
 
         private void OnDrawGizmos()
         {
-            var zAxis = transform.TransformDirection(VectorConverter.ConvertedPlanarZ);
+            var zAxis = transform.TransformDirection(VectorConverter.planarZ);
             Gizmos.color = new Color(1, 1, 1, .15f);
             GizmosUtil.DrawCircle(transform.position, zAxis, (float)SurfaceRadius, 30);
             GizmosUtil.DrawCircle(transform.position, zAxis, (float)InfluenceRadius, 60);

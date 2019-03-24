@@ -3,18 +3,18 @@
     [System.Serializable]
     public struct MinMax
     {
-        public double Min;
-        public double Max;
+        public double min;
+        public double max;
 
         public MinMax(double min, double max)
         {
-            Min = min;
-            Max = max;
+            this.min = min;
+            this.max = max;
         }
 
         public bool IsInside(double value)
         {
-            return value >= Min && value <= Max;
+            return value >= min && value <= max;
         }
     }
 }

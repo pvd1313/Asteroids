@@ -7,18 +7,14 @@ namespace Asteroids.Gravity
         private struct CircularComputer : IComputer
         {
             public bool Periodic { get { return true; } }
-            public double SemiMajorAxis { get { return _semiAxis; } }
-            public double Apoapsis { get { return _semiAxis; } }
-            public double Periapsis { get { return _semiAxis; } }
-            public double Argument { get { return _inclination; } }
+            public double SemiMajorAxis { get; private set; }
+            public double Apoapsis { get { return SemiMajorAxis; } }
+            public double Periapsis { get { return SemiMajorAxis; } }
+            public double Argument { get; private set; }
             public double Eccentricity { get { return 0; } }
-            public PlanarCircle Bounds { get { return _bounds; } }
+            public PlanarCircle Bounds { get; private set; }
 
-            private double _semiAxis;
-            private double _inclination;
-            private PlanarCircle _bounds;
-
-#region constructor
+            #region constructor
             public bool CanInstantiate(double eccentricity)
             {
                 return eccentricity == 0;
@@ -31,9 +27,9 @@ namespace Asteroids.Gravity
 
             private CircularComputer(double eccentricity, double periapsis, double argument)
             {
-                _semiAxis = periapsis;
-                _bounds = new PlanarCircle(PlanarVector.Zero, _semiAxis);
-                _inclination = argument;
+                SemiMajorAxis = periapsis;
+                Bounds = new PlanarCircle(PlanarVector.zero, SemiMajorAxis);
+                Argument = argument;
             }
 
             public IComputer Instantiate(PlanarVector position, PlanarVector velocity, double mass)
@@ -43,9 +39,9 @@ namespace Asteroids.Gravity
 
             private CircularComputer(PlanarVector position, PlanarVector velocity, double mass)
             {
-                _semiAxis = position.Magnitude;
-                _bounds = new PlanarCircle(PlanarVector.Zero, _semiAxis);
-                _inclination = 0;
+                SemiMajorAxis = position.Magnitude;
+                Bounds = new PlanarCircle(PlanarVector.zero, SemiMajorAxis);
+                Argument = 0;
             }
 
             public IComputer Instantiate(PlanarVector position, double eccentricity, double argument)
@@ -55,38 +51,38 @@ namespace Asteroids.Gravity
 
             private CircularComputer(PlanarVector position, double eccentricity, double argument)
             {
-                _semiAxis = position.Magnitude;
-                _bounds = new PlanarCircle(PlanarVector.Zero, _semiAxis);
-                _inclination = argument;
+                SemiMajorAxis = position.Magnitude;
+                Bounds = new PlanarCircle(PlanarVector.zero, SemiMajorAxis);
+                Argument = argument;
             }
 #endregion constructor
 
             public PlanarVector VelocityFromLocal(double localAnomaly, double meanVelocity)
             {
-                var angle = localAnomaly + _inclination;
+                var angle = localAnomaly + Argument;
                 PlanarVector velocity;
-                velocity.X = -_semiAxis * Math.Sin(angle) * meanVelocity;
-                velocity.Y =  _semiAxis * Math.Cos(angle) * meanVelocity;
+                velocity.x = -SemiMajorAxis * Math.Sin(angle) * meanVelocity;
+                velocity.y =  SemiMajorAxis * Math.Cos(angle) * meanVelocity;
                 return velocity;
             }
 
             public PlanarVector PositionFromLocal(double localAnomaly)
             {
-                var angle = localAnomaly + _inclination;
+                var angle = localAnomaly + Argument;
                 PlanarVector position;
-                position.X = _semiAxis * Math.Cos(angle);
-                position.Y = _semiAxis * Math.Sin(angle);
+                position.x = SemiMajorAxis * Math.Cos(angle);
+                position.y = SemiMajorAxis * Math.Sin(angle);
                 return position;
             }
 
             public double AltitudeFromLocal(double localAnomaly)
             {
-                return _semiAxis;
+                return SemiMajorAxis;
             }
 
             public double LocalFromPosition(PlanarVector position)
             {
-                return Math.Atan2(position.Y, position.X) - _inclination;
+                return Math.Atan2(position.y, position.x) - Argument;
             }
 
             public double LocalFromAltitude(double altitude)

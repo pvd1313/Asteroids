@@ -6,7 +6,7 @@ namespace Asteroids.Gravity
     [Serializable]
     public partial class Orbit : ISerializationCallbackReceiver
     {
-        private const double LOCAL_ANOMALY_ACCURACY = 1e-9;
+        private const double LocalAnomalyAccuracy = 1e-9;
 
         public double Eccentricity { get { return _eccentricity; } }
         public double Apoapsis { get { return _computer.Apoapsis; } }
@@ -41,8 +41,8 @@ namespace Asteroids.Gravity
             var r = position.Magnitude;
             var momentumMass = angularMomentum / mass;
             PlanarVector eccentricity;
-            eccentricity.X =  velocity.Y * momentumMass - position.X / r;
-            eccentricity.Y = -velocity.X * momentumMass - position.Y / r;
+            eccentricity.x =  velocity.y * momentumMass - position.x / r;
+            eccentricity.y = -velocity.x * momentumMass - position.y / r;
             return eccentricity;
         }
 
@@ -123,7 +123,7 @@ namespace Asteroids.Gravity
 
         public void BuildPath(PlanarVector[] result)
         {
-            BuildPathOnLocalAnomaly(-Math.PI, MathUtil.TWO_PI, result);
+            BuildPathOnLocalAnomaly(-Math.PI, 2 * Math.PI, result);
         }
 
         private void BuildPathOnLocalAnomaly(double angle, double delta, PlanarVector[] result)

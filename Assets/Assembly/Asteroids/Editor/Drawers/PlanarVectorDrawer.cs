@@ -10,8 +10,8 @@ namespace Asteroids.Editor
         public override void OnGUI(Rect position, SerializedProperty property, GUIContent label)
         {
             EditorGUIUtility.wideMode = true;
-            SerializedProperty x = property.FindPropertyRelative("X");
-            SerializedProperty y = property.FindPropertyRelative("Y");
+            SerializedProperty x = property.FindPropertyRelative("x");
+            SerializedProperty y = property.FindPropertyRelative("y");
 
             GUIContent[] labels =
             {

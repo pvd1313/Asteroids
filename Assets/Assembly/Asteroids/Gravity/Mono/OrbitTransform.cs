@@ -6,10 +6,8 @@ namespace Asteroids.Gravity.Mono
     [ExecuteInEditMode, DisallowMultipleComponent]
     public partial class OrbitTransform : MonoBehaviour, ISerializationCallbackReceiver
     {
-        public delegate void Event();
-
-        private const int PATH_TOPOLOGY = 250;
-        private static readonly PlanarVector[] PLANAR_PATH_BUFFER = new PlanarVector[PATH_TOPOLOGY];
+        private const int PathTopology = 250;
+        private static readonly PlanarVector[] planarPathBuffer = new PlanarVector[PathTopology];
 
     #region properties
         public Orbit Orbit
@@ -46,11 +44,11 @@ namespace Asteroids.Gravity.Mono
         {
             get
             {
-                if (_path == null) _path = new Vector3[PATH_TOPOLOGY];
+                if (_path == null) _path = new Vector3[PathTopology];
                 if (_pathOutdated)
                 {
-                    _orbit.BuildPath(PLANAR_PATH_BUFFER);
-                    VectorConverter.Convert(PLANAR_PATH_BUFFER, _path);
+                    _orbit.BuildPath(planarPathBuffer);
+                    VectorConverter.Convert(planarPathBuffer, _path);
                     _pathOutdated = false;
                 }
                 

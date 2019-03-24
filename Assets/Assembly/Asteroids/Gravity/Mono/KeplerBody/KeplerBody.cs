@@ -8,13 +8,13 @@ namespace Asteroids.Gravity.Mono
     [ExecuteInEditMode, DisallowMultipleComponent, RequireComponent(typeof(OrbitTransform))]
     public partial class KeplerBody : MonoBehaviour
     {
-        private const int PATH_TOPOLOGY = 50;
+        private const int PathTopology = 50;
         //private static readonly PlanarVector[] PLANAR_PATH_BUFFER = new PlanarVector[PATH_TOPOLOGY];
 
-        private static bool ParentChangedManually;
-        private static bool OrbitChangedManually;
-        private static bool AngleChangedManually;
-        private static List<Vector3> PointsBuffer = new List<Vector3>();
+        private static bool parentChangedManually;
+        private static bool orbitChangedManually;
+        private static bool angleChangedManually;
+        private static List<Vector3> pointsBuffer = new List<Vector3>();
 
         public GravityField Parent { get { return _parent; } }
 
@@ -34,8 +34,8 @@ namespace Asteroids.Gravity.Mono
             get { return new Orbit.Motion(_orbitTransform.Orbit, _orbitTransform.Angle, _angleSpeed); }
             set
             {
-                OrbitChangedManually = true;
-                AngleChangedManually = true;
+                orbitChangedManually = true;
+                angleChangedManually = true;
                 _orbitTransform.Modify(value.Orbit, value.Angle);
                 _angleSpeed = value.AngleSpeed;
                 _nextEvent = EventComputer.ComputeNext(this);
@@ -113,7 +113,7 @@ namespace Asteroids.Gravity.Mono
         private void FixedUpdate()
         {
             if (_parent == null) return;
-            AngleChangedManually = true;
+            angleChangedManually = true;
             _orbitTransform.Angle += _angleSpeed * Time.fixedDeltaTime;
             if (_nextEvent == null) return;
             if (_nextEvent.ExecutionTime < Time.time)
@@ -133,9 +133,9 @@ namespace Asteroids.Gravity.Mono
         private void OnTransformParentChanged()
         {
             _parent = transform.WrapParent().GetComponent<GravityField>();
-            if (ParentChangedManually)
+            if (parentChangedManually)
             {
-                ParentChangedManually = false;
+                parentChangedManually = false;
                 return;
             }
             if (Application.isPlaying)
@@ -155,8 +155,8 @@ namespace Asteroids.Gravity.Mono
             Gizmos.color = new Color(1, 1, 1, .05f);
             var path = LocalPath;
             var parent = transform.WrapParent();
-            parent.TransformPoints(path.Curve, PointsBuffer);
-            GizmosUtil.DrawPolyline(PointsBuffer, path.Enclosed);
+            parent.TransformPoints(path.Curve, pointsBuffer);
+            GizmosUtil.DrawPolyline(pointsBuffer, path.Enclosed);
         }
 
         private void OnParentGravityFieldInitialized(GravityField field)
@@ -183,9 +183,9 @@ namespace Asteroids.Gravity.Mono
 
         private void OnOrbitChanged(Orbit newOrbit)
         {
-            if (OrbitChangedManually)
+            if (orbitChangedManually)
             {
-                OrbitChangedManually = false;
+                orbitChangedManually = false;
                 return;
             }
             if (_parent == null) return;
@@ -195,9 +195,9 @@ namespace Asteroids.Gravity.Mono
 
         private void OnAngleChanged()
         {
-            if (AngleChangedManually)
+            if (angleChangedManually)
             {
-                AngleChangedManually = false;
+                angleChangedManually = false;
                 return;
             }
             _nextEvent = EventComputer.ComputeNext(this);
@@ -211,7 +211,7 @@ namespace Asteroids.Gravity.Mono
 
         private void ChangeParent(GravityField newParent, Orbit.Motion newMotion)
         {
-            ParentChangedManually = true;
+            parentChangedManually = true;
             _parent = newParent;
             transform.parent = newParent.transform;
             Motion = newMotion;

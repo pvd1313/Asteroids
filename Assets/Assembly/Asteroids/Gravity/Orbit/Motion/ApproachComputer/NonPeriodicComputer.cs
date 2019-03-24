@@ -19,7 +19,7 @@ namespace Asteroids.Gravity
                         _motionB = nonPeriodicB;
                     }
 
-                    public double? TryFindNextApproachTime(double approachDistance)
+                    public double? FindNextApproachTime(double approachDistance)
                     {
                         var velocityA = _motionA.Orbit.ComputeVelocity(0, _motionA.AngleSpeed);
                         var velocityB = _motionB.Orbit.ComputeVelocity(0, _motionB.AngleSpeed);
@@ -28,12 +28,12 @@ namespace Asteroids.Gravity
                         var distanceRel = 1.0;
                         var prevDistance = .0;
 
-                        for(var i = 0; i < MAX_STEPS; i++, time += timeStep * distanceRel)
+                        for(var i = 0; i < maxSteps; i++, time += timeStep * distanceRel)
                         {
                             var posA = _motionA.ComputePosition(time);
                             var posB = _motionB.ComputePosition(time);
                             var distance = PlanarVector.Distance(posA, posB);
-                            distanceRel = Math.Pow(distance / approachDistance, DISTANCE_POW);
+                            distanceRel = Math.Pow(distance / approachDistance, distancePow);
                             if (distance <= approachDistance) return time;
                             if (_motionA.ComputeAngle(time) * _motionA.AngleSpeed > 0)
                                 if (_motionB.ComputeAngle(time) * _motionB.AngleSpeed > 0)

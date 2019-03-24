@@ -9,7 +9,7 @@ namespace Asteroids
 {
     public static class EditorLazyAction
     {
-        private static List<Action> Actions = new List<Action>();
+        private static List<Action> actions = new List<Action>();
 
         static EditorLazyAction()
         {
@@ -21,7 +21,7 @@ namespace Asteroids
 
         private static void Update()
         {
-            foreach (var action in Actions)
+            foreach (var action in actions)
             {
                 try
                 {
@@ -32,13 +32,14 @@ namespace Asteroids
                     Debug.LogException(ex);
                 }
             }   
-            Actions.Clear();
+            actions.Clear();
         }
 
         public static void Add(Action action)
         {
-            if (action != null)
-                Actions.Add(action);
+            #if UNITY_EDITOR
+            if (action != null) actions.Add(action);
+            #endif
         }
     }
 }

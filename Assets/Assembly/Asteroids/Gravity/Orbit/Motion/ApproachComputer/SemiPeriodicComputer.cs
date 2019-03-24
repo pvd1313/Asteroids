@@ -19,19 +19,19 @@ namespace Asteroids.Gravity
                         _motionB = nonPeriodic;
                     }
 
-                    public double? TryFindNextApproachTime(double approachDistance)
+                    public double? FindNextApproachTime(double approachDistance)
                     {
                         var timeStep = ComputeTimeStep(_motionA, approachDistance);
                         var time = timeStep;
                         var maxDistance = _motionA.Orbit.Apoapsis + approachDistance;
                         var distanceRel = 1.0;
 
-                        for(var i = 0; i < MAX_STEPS; i++, time += timeStep * distanceRel)
+                        for(var i = 0; i < maxSteps; i++, time += timeStep * distanceRel)
                         {
                             var posA = _motionA.ComputePosition(time);
                             var posB = _motionB.ComputePosition(time);
                             var distance = PlanarVector.Distance(posA, posB);
-                            distanceRel = Math.Pow(distance / approachDistance, DISTANCE_POW);
+                            distanceRel = Math.Pow(distance / approachDistance, distancePow);
                             if (distance <= approachDistance) return time;
                             if (_motionB.ComputeAngle(time) * _motionB.AngleSpeed > 0)
                                 if (posB.Magnitude >= maxDistance)

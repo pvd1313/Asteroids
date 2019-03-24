@@ -4,7 +4,6 @@ namespace Asteroids
 {
     public static class MathUtil
     {
-        public const double TWO_PI = 2 * Math.PI;
         public const double Deg2Rad = 1.0 / 180 * Math.PI;
         public const double Rad2Deg = 1.0 / Math.PI * 180;
 
@@ -27,8 +26,8 @@ namespace Asteroids
 
         public static double RepeatAngle(double angle)
         {
-            if (angle >= TWO_PI) return angle % TWO_PI;
-            if (angle < 0) return TWO_PI + angle % TWO_PI;
+            if (angle >= 2 * Math.PI) return angle % (2 * Math.PI);
+            if (angle < 0) return 2 * Math.PI + angle % (2 * Math.PI);
             return angle;
         }
 
@@ -40,12 +39,12 @@ namespace Asteroids
             if (target > current)
             {
                 clockwise = target - current;
-                counter = current + (TWO_PI - target);      
+                counter = current + (2 * Math.PI - target);      
             }
             else
             {
                 counter = current - target;
-                clockwise = target + (TWO_PI - current);
+                clockwise = target + (2 * Math.PI - current);
             }
             return clockwise < counter ? clockwise : -counter;
         }
@@ -57,12 +56,12 @@ namespace Asteroids
             if (direction >= 0)
             {
                 if (target >= current) return target - current;
-                return target + TWO_PI - current;
+                return target + 2 * Math.PI - current;
             }
             else
             {
                 if (current >= target) return -(current - target);
-                return -(current + TWO_PI - target);
+                return -(current + 2 * Math.PI - target);
             }
         }
 
@@ -71,7 +70,7 @@ namespace Asteroids
             current = RepeatAngle(current);
             target = RepeatAngle(target);
             if (target >= current) return target - current;
-            return target + TWO_PI - current;
+            return target + 2 * Math.PI - current;
         }
 
         public static double NegativeDeltaAngle(double current, double target)
@@ -79,7 +78,7 @@ namespace Asteroids
             current = RepeatAngle(current);
             target = RepeatAngle(target);
             if (current >= target) return -(current - target);
-            return -(current + TWO_PI - target);
+            return -(current + 2 * Math.PI - target);
         }
     }
 }

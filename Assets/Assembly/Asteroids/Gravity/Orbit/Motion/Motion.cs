@@ -15,7 +15,7 @@ namespace Asteroids.Gravity
                 get
                 {
                     if (!Periodic) return double.PositiveInfinity;
-                    return Math.Abs(MathUtil.TWO_PI / AngleSpeed);
+                    return Math.Abs(2 * Math.PI / AngleSpeed);
                 }
             }
 
@@ -89,7 +89,7 @@ namespace Asteroids.Gravity
                 if (Orbit.IntersectsOrbit(target.Orbit, distance))
                 {
                     var computer = ApproachComputer.Create(this, target);
-                    var approach = computer.TryFindNextApproachTime(distance);
+                    var approach = computer.FindNextApproachTime(distance);
                     if (approach != null)
                     {
                         UnityEngine.Debug.LogFormat("Approach in {0}s", approach.Value);
@@ -103,21 +103,21 @@ namespace Asteroids.Gravity
                 return null;
             }
 
-            public double? TryPredictTimeWhenAbove(double targetAltitude)
+            public double? PredictTimeWhenAbove(double targetAltitude)
             {
                 var altitude = Orbit.ComputeAltitude(Angle);
                 if (altitude >= targetAltitude) return 0;
-                return TryFindApproachTime(targetAltitude);
+                return FindApproachTime(targetAltitude);
             }
 
-            public double? TryPredictTimeWhenBelow(double targetAltitude)
+            public double? PredictTimeWhenBelow(double targetAltitude)
             {
                 var altitude = Orbit.ComputeAltitude(Angle);
                 if (altitude <= targetAltitude) return 0;
-                return TryFindApproachTime(targetAltitude);
+                return FindApproachTime(targetAltitude);
             }
 
-            private double? TryFindApproachTime(double targetAltitude)
+            private double? FindApproachTime(double targetAltitude)
             {
                 if (Orbit.IntersectsAltitude(targetAltitude))
                 {
@@ -132,7 +132,7 @@ namespace Asteroids.Gravity
                 var periodic = Orbit.Periodic;
 
                 var angle_0 = Orbit.ComputeAngle(targetAltitude);
-                var angle_1 = periodic ? (MathUtil.TWO_PI - angle_0) : (-angle_0);
+                var angle_1 = periodic ? (2 * Math.PI - angle_0) : (-angle_0);
                 var time_0 = ApproachTimeFromAngle(angle_0);
                 var time_1 = ApproachTimeFromAngle(angle_1);
 
@@ -157,13 +157,13 @@ namespace Asteroids.Gravity
             private static double PositiveDeltaAngle(double start, double end)
             {
                 if (end >= start) return end - start;
-                return end + MathUtil.TWO_PI - start;
+                return end + 2 * Math.PI - start;
             }
 
             private static double NegativeDeltaAngle(double start, double end)
             {
                 if (start >= end) return -(start - end);
-                return -(start + MathUtil.TWO_PI - end);
+                return -(start + 2 * Math.PI - end);
             }
 
             private Motion() { }

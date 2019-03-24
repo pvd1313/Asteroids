@@ -7,16 +7,17 @@ namespace Asteroids.Gravity
         // TODO: Add validation inside computers.
         private static class Validator
         {
-            private static readonly IComputer[] COMPUTERS = { new CircularComputer(), new EllipticComputer(), new HyperbolicComputer() };
-            private const double ECC_CIRCULAR_MAX   = 0.001;
-            private const double ECC_ELLIPTIC_MAX   = 0.999;
-            private const double ECC_HYPERBOLIC_MIN = 1.001;
+            private const double EccCircularMax = 0.001;
+            private const double EccEllipticMax = 0.999;
+            private const double EccHyperbolicMax = 1.001;
+
+            private static readonly IComputer[] computers = { new CircularComputer(), new EllipticComputer(), new HyperbolicComputer() };           
 
             public static IComputer FindComputer(double eccentricity)
             {
-                for (var i = 0; i < COMPUTERS.Length; i++)
-                    if (COMPUTERS[i].CanInstantiate(eccentricity))
-                        return COMPUTERS[i];
+                for (var i = 0; i < computers.Length; i++)
+                    if (computers[i].CanInstantiate(eccentricity))
+                        return computers[i];
                 throw new Exception("Can not found valid orbit computer.");
             }
 
@@ -33,14 +34,14 @@ namespace Asteroids.Gravity
 
             public static double ValidateEccentricity(double eccentricity)
             {
-                if (eccentricity < ECC_CIRCULAR_MAX) return 0;
+                if (eccentricity < EccCircularMax) return 0;
                 if (eccentricity < 1)
                 {
-                    if (eccentricity > ECC_ELLIPTIC_MAX) return ECC_ELLIPTIC_MAX;
+                    if (eccentricity > EccEllipticMax) return EccEllipticMax;
                 }
                 else
                 {
-                    if (eccentricity < ECC_HYPERBOLIC_MIN) return ECC_HYPERBOLIC_MIN;
+                    if (eccentricity < EccHyperbolicMax) return EccHyperbolicMax;
                 }
                 return eccentricity;
             }

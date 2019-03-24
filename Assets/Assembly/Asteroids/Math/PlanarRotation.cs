@@ -18,7 +18,7 @@ namespace Asteroids
         {
             var sin = Math.Sin(angle);
             var cos = Math.Cos(angle);
-            return new PlanarVector(vector.X * cos - vector.Y * sin, vector.X * sin + vector.Y * cos);
+            return new PlanarVector(vector.x * cos - vector.y * sin, vector.x * sin + vector.y * cos);
         }
 
         public PlanarRotation(double angle)
@@ -29,7 +29,7 @@ namespace Asteroids
 
         public PlanarVector Rotate(PlanarVector source)
         {
-            return new PlanarVector(source.X * _cos - source.Y * _sin, source.X * _sin + source.Y * _cos);
+            return new PlanarVector(source.x * _cos - source.y * _sin, source.x * _sin + source.y * _cos);
         }
 
         public PlanarVector Rotate(double xComponent)
@@ -39,7 +39,7 @@ namespace Asteroids
 
         public PlanarVector InvertedRotate(PlanarVector source)
         {
-            return new PlanarVector(source.X * _cos + source.Y * _sin, source.Y * _cos - source.X * _sin);
+            return new PlanarVector(source.x * _cos + source.y * _sin, source.y * _cos - source.x * _sin);
         }
 
         public PlanarVector InvertedRotate(double xComponent)

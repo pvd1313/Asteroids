@@ -21,19 +21,19 @@ namespace Asteroids.Gravity
                             Util.Swap(ref _motionA, ref _motionB);
                     }
 
-                    public double? TryFindNextApproachTime(double approachDistance)
+                    public double? FindNextApproachTime(double approachDistance)
                     {
                         var timeStep = ComputeTimeStep(_motionA, approachDistance);
                         var distance = approachDistance;
                         var distanceMul = 1.0;
                         var time = .0;
 
-                        for (var i = 0; i <= MAX_STEPS; i++, time += timeStep * distanceMul)
+                        for (var i = 0; i <= maxSteps; i++, time += timeStep * distanceMul)
                         {
                             var posA = _motionA.ComputePosition(time);
                             var posB = _motionB.ComputePosition(time);
                             distance = PlanarVector.Distance(posA, posB);
-                            distanceMul = Math.Pow(distance / approachDistance, DISTANCE_POW);
+                            distanceMul = Math.Pow(distance / approachDistance, distancePow);
                             if (distance <= approachDistance) return time;
                         }
                         return null;

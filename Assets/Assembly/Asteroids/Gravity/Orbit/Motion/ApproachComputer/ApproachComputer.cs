@@ -8,12 +8,12 @@ namespace Asteroids.Gravity
         {
             private partial class ApproachComputer
             {
-                public static int MAX_STEPS = 1000;
-                public static double DISTANCE_POW = 1.5;
+                public static readonly int maxSteps = 1000;
+                public static readonly double distancePow = 1.5;
 
                 public interface IComputer
                 {
-                    double? TryFindNextApproachTime(double approachDistance);
+                    double? FindNextApproachTime(double approachDistance);
                 }
 
                 public static IComputer Create(Motion motionA, Motion motionB)

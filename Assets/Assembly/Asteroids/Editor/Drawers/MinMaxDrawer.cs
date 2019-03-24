@@ -11,8 +11,8 @@ namespace Asteroids.Editor
         {
             EditorGUIUtility.wideMode = true;
 
-            var min = property.FindPropertyRelative("Min");
-            var max = property.FindPropertyRelative("Max");
+            var min = property.FindPropertyRelative("min");
+            var max = property.FindPropertyRelative("max");
 
             GUIContent[] labels = { new GUIContent("min", "Minimum value"), new GUIContent("max", "Maximum value") };
             double[] values = { min.doubleValue, max.doubleValue };

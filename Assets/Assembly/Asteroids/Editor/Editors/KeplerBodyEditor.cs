@@ -1,5 +1,6 @@
 ﻿using UnityEditor;
 using UnityEngine;
+using System;
 
 namespace Asteroids.Gravity.Mono.Editor
 {
@@ -60,7 +61,7 @@ namespace Asteroids.Gravity.Mono.Editor
             EditorGUI.BeginDisabledGroup(true);
             if (bodyMotion.Orbit.Periodic)
             {
-                var period = MathUtil.TWO_PI / bodyMotion.AngleSpeed;
+                var period = 2 * Math.PI / bodyMotion.AngleSpeed;
                 EditorGUILayout.DoubleField("Period", period);
             }
             else

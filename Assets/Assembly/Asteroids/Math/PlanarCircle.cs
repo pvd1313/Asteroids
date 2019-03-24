@@ -4,8 +4,8 @@ namespace Asteroids
 {
     public struct PlanarCircle
     {
-        public PlanarVector Position;
-        public double Radius;
+        public PlanarVector Position { get; private set; }
+        public double Radius { get; private set; }
         public double Perimeter { get { return Math.PI * Radius * Radius; } }
 
         public PlanarCircle(PlanarVector position, double radius)

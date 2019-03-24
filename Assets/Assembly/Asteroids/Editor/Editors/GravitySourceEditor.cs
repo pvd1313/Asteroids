@@ -62,8 +62,8 @@ namespace Asteroids.Gravity.Mono.Editor
             var gSource = target as GravityField;
             var transform = gSource.transform;
             var gravity = gSource.Gravity;
-            var zAxis = transform.TransformDirection(VectorConverter.ConvertedPlanarZ).normalized;
-            var xAxis = transform.TransformDirection(VectorConverter.ConvertedPlanarX).normalized;
+            var zAxis = transform.TransformDirection(VectorConverter.planarZ).normalized;
+            var xAxis = transform.TransformDirection(VectorConverter.planarX).normalized;
             var rotation = Quaternion.LookRotation(xAxis, zAxis);
             Handles.color = new Color(1f, 1f, 1f, .6f);
 

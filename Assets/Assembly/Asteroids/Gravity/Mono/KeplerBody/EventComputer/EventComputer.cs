@@ -8,7 +8,7 @@ namespace Asteroids.Gravity.Mono
     {
         private static partial class EventComputer
         {
-            private static readonly List<GravityField> FIELDS_BUFFER = new List<GravityField>();
+            private static readonly List<GravityField> fieldsBuffer = new List<GravityField>();
 
             public static Event ComputeNext(KeplerBody body)
             {
@@ -20,16 +20,16 @@ namespace Asteroids.Gravity.Mono
             private static Event ComputeNextEscape(KeplerBody body)
             {
                 var parent = body.Parent;
-                if (parent == null) return null;
+                if (!parent) return null;
 
                 var parentBody = parent.GetComponent<KeplerBody>();
-                if (parentBody == null) return null;
+                if (!parentBody) return null;
 
                 var grandParent = parentBody.Parent;
-                if (grandParent == null) return null;
+                if (!grandParent) return null;
 
                 var bodyMotion = body.Motion;
-                var escapeDeltaTime = bodyMotion.TryPredictTimeWhenAbove(parent.InfluenceRadius);
+                var escapeDeltaTime = bodyMotion.PredictTimeWhenAbove(parent.InfluenceRadius);
                 if (escapeDeltaTime == null) return null;
 
                 var eventDeltaTime = escapeDeltaTime.Value;
@@ -56,10 +56,10 @@ namespace Asteroids.Gravity.Mono
                 Event nextEvent = null;
                 var bodyParent = body.Parent;
                 if (bodyParent == null) return null;
-                bodyParent.GetComponentsInFirstChildren(true, FIELDS_BUFFER);
-                for(var i = 0; i < FIELDS_BUFFER.Count; i++)
+                bodyParent.GetComponentsInFirstChildren(true, fieldsBuffer);
+                for(var i = 0; i < fieldsBuffer.Count; i++)
                 {
-                    var join = ComputeNextJoin(body, FIELDS_BUFFER[i]);
+                    var join = ComputeNextJoin(body, fieldsBuffer[i]);
                     nextEvent = ChooseNearestEvent(join, nextEvent);
                 }
                 return nextEvent;

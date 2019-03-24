@@ -8,10 +8,10 @@ namespace Asteroids.Gravity.Mono
         {
             public struct EventData
             {
-                public KeplerBody Body;
-                public double ExecutionTime;
-                public Orbit.Motion NewMotion;
-                public GravityField NewParent;
+                public KeplerBody Body { get; set; }
+                public double ExecutionTime { get; set; }
+                public Orbit.Motion NewMotion { get; set; }
+                public GravityField NewParent { get; set; }
             }
 
             public class Event

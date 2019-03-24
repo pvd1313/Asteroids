@@ -6,7 +6,7 @@ namespace Asteroids
 {
     public static class TransformExtensions
     {
-        private static readonly IExtension DEFAULT_NULL_WRAPPER = new NullWrapper();
+        private static readonly IExtension defaultNullWrapper = new NullWrapper();
 
         public interface IExtension
         {
@@ -29,9 +29,9 @@ namespace Asteroids
             private readonly Transform _transform;
 
             public Vector3 Position { get { return _transform.position; } }
-            public Vector3 PlanarX { get { return _transform.rotation * VectorConverter.ConvertedPlanarX; } }
-            public Vector3 PlanarY { get { return _transform.rotation * VectorConverter.ConvertedPlanarY; } }
-            public Vector3 PlanarZ { get { return _transform.rotation * VectorConverter.ConvertedPlanarZ; } }
+            public Vector3 PlanarX { get { return _transform.rotation * VectorConverter.planarX; } }
+            public Vector3 PlanarY { get { return _transform.rotation * VectorConverter.planarY; } }
+            public Vector3 PlanarZ { get { return _transform.rotation * VectorConverter.planarZ; } }
 
             public Wrapper(Transform transform) { _transform = transform; }
             public Vector3 TransformPoint(Vector3 position) { return _transform.TransformPoint(position); }
@@ -51,12 +51,10 @@ namespace Asteroids
 
         private struct NullWrapper : IExtension
         {
-            private static readonly Vector3 ZERO = new Vector3(0, 0, 0);
-
-            public Vector3 Position { get { return ZERO; } }
-            public Vector3 PlanarX { get { return VectorConverter.ConvertedPlanarX; } }
-            public Vector3 PlanarY { get { return VectorConverter.ConvertedPlanarY; } }
-            public Vector3 PlanarZ { get { return VectorConverter.ConvertedPlanarZ; } }
+            public Vector3 Position { get { return Vector3.zero; } }
+            public Vector3 PlanarX { get { return VectorConverter.planarX; } }
+            public Vector3 PlanarY { get { return VectorConverter.planarY; } }
+            public Vector3 PlanarZ { get { return VectorConverter.planarZ; } }
 
             public Vector3 TransformPoint(Vector3 position) { return position; }
             public Vector3 TransformDirection(Vector3 direction) { return direction; }
@@ -79,7 +77,7 @@ namespace Asteroids
         public static IExtension WrapParent(this Transform transform)
         {
             var parent = transform.parent;
-            if (parent == null) return DEFAULT_NULL_WRAPPER;
+            if (parent == null) return defaultNullWrapper;
             return new Wrapper(parent);
         }
 
